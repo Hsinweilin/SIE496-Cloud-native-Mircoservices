@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: config-server
+  profiles:
+    active:
+#      - vault
+     - git # Try Git first
+#     - native # Fall back to native file system if Git isn't available
+  cloud:
+    config:
+      server:
+#        vault:
+#          port: 8200
+#          host: 127.0.0.1
+#          kvVersion: 2
+        git:
+          uri: https://github.com/Hsinweilin/Spring-Cloud-Config-Server
+          searchPaths: . # set to root directory of repo
+          ref: main
+#        native:
+#          search-locations: classpath:/config # Local file system path
+#        vault:
+#          port: 8200
+#          host: 127.0.0.1
+#          kvVersion: 2
+    
+server:
+  port: 8071
+  
+encrypt:
+  key: fje83Ki8403Iod87dne7Yjsl3THueh48jfuO9j4U2hf64Lo 
+
+
+#Enable all Spring Boot Actuator endpoints.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
