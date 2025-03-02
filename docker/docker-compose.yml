@@ -55,8 +55,25 @@ services:
   #   networks:
   #     - backend
 
-  userservice:
-    image: ostock/user-service:0.0.1-SNAPSHOT
+  # userservice:
+  #   image: ostock/user-service:0.0.1-SNAPSHOT
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: "test"  # Correctly sets the active profile to 'test'
+  #     SPRING_CLOUD_CONFIG_URI: "http://configserver:8089"  # Correct config server URI
+  #     SPRING_CLOUD_CONFIG_PORT: "8089"  # Optional if you need to override the default port (usually not needed if correct URI is set)
+  #     DATABASESERVER_PORT: "5432"  # You can keep other environment variables as needed
+  #     ENCRYPT_KEY: "IMSYMMETRIC"
+  #   depends_on:
+  #     database:
+  #       condition: service_healthy
+  #     configserver:
+  #       condition: service_started
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - backend
+  inventory-order-service:
+    image: ostock/inventory-order-service:0.0.1-SNAPSHOT
     environment:
       SPRING_PROFILES_ACTIVE: "test"  # Correctly sets the active profile to 'test'
       SPRING_CLOUD_CONFIG_URI: "http://configserver:8089"  # Correct config server URI
