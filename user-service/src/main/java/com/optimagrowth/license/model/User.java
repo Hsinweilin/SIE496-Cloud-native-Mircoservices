@@ -16,12 +16,12 @@ import lombok.ToString;
 
 @Getter @Setter @ToString
 @Entity
-@Table(name="user")
+@Table(name="users")
 public class User extends RepresentationModel<User> {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Database will auto-increment the ID
-	@Column(name = "id", nullable = false)
+	@Column(name = "userId", nullable = false)
 	private Long userId;
 	@Column(name = "username", nullable = false)
 	private String username;
