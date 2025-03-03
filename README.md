@@ -16,18 +16,26 @@ This repo is for SIE496 Cloud-native Mircoservices project
     Follow the [link](https://www.oracle.com/java/technologies/downloads/) and install JDK
 
 4. install Maven 
-    ``` brew install maven```
+    ``` shell
+    brew install maven
+    ```
 
 ## Start Local Testing
 
 1. Run setup.sh file to automate maven and docker image build process
-    ```./setup.sh```
+    ```shell
+    ./setup.sh
+    ```
 
 2. cd to docker folder
-    ```cd docker```
+    ```shell
+    cd docker
+    ```
 
 3. execute docker compose up
-    ```docker-compose up --build```
+    ```shell
+    docker-compose up --build
+    ```
 
 
 The application should run on your local environment now
