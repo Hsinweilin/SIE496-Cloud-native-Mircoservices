@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.optimagrowth</groupId>
-	<artifactId>licensing-service</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
-	<name>License Service</name>
-	<description>Ostock Licensing Service</description>
+	<artifactId>inventory-order-service</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Inventory Order Service</name>
+	<description>Ostock Inventory Order Service</description>
 
 	<properties>
 		<java.version>11</java.version>

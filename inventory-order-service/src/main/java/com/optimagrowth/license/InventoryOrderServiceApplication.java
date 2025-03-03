@@ -12,10 +12,10 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @SpringBootApplication
 @RefreshScope
-public class LicenseServiceApplication {
+public class InventoryOrderServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LicenseServiceApplication.class, args);
+		SpringApplication.run(InventoryOrderServiceApplication.class, args);
 	}
 
 	@Bean

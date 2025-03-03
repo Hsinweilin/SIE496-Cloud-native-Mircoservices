@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 
 
 import com.optimagrowth.license.model.User;
+import com.optimagrowth.license.model.LoginRequest;
 import com.optimagrowth.license.service.UserService;
 
 @RestController
@@ -28,10 +29,10 @@ public class UserController {
 	private UserService userService;
 
 	@RequestMapping(value="/{userId}",method = RequestMethod.GET)
-	public ResponseEntity<User> getUser( @PathVariable("userId") Long userId) {
+	public ResponseEntity<?> getUser( @PathVariable("userId") Long userId) {
 		User user = userService.getUser(userId);
         if (user == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 		user.setPassword(null); // set password to null
         return ResponseEntity.ok(user); // Return user with 200 OK status
@@ -72,8 +73,8 @@ public class UserController {
 
     // login user endpoint
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
-        String token = userService.authenticateAndGenerateToken(username, password);
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        String token = userService.authenticateAndGenerateToken(loginRequest.getUsername(), loginRequest.getPassword());
         if (token != null) {
             return ResponseEntity.ok(token); // Return JWT token
         } else {

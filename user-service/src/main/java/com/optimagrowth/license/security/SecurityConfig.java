@@ -20,12 +20,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+            .csrf().disable()  // Disable CSRF protection for testing
             .authorizeRequests()
-                .antMatchers("/v1/user/**").permitAll() // Allow access to all endpoints under /v1/user/*
-                .anyRequest().authenticated() // Require authentication for other requests
+                .antMatchers("/**").permitAll()  // Allow access to all endpoints
+            .anyRequest().permitAll()  // Allow access to any request without authentication
             .and()
-            .formLogin().disable() // Disable form login if you're not using it
-            .httpBasic().disable(); // Disable HTTP Basic authentication if you're not using it
+            .formLogin().disable() // Disable form login
+            .httpBasic().disable(); // Disable HTTP Basic authentication
     }
 }
 
