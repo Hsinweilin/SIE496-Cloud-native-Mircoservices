@@ -52,19 +52,14 @@ public class InventoryService {
     //     return inventoryRepository.findByProductName(productName);
     // }
 
-    public HttpStatus deleteInventory(Long inventoryId){
-        try {
-            Inventory inventory = inventoryRepository.findById(inventoryId).orElse(null);
-            if (inventory == null) {
-                return HttpStatus.NOT_FOUND; // User not found
-            }
-            // Delete the user if it exists
-            inventoryRepository.delete(inventory);
-            return HttpStatus.OK; // User successfully deleted
-        } catch (Exception e) {
-            // Handle any unexpected errors
-            return HttpStatus.INTERNAL_SERVER_ERROR; // Internal server error
+    public String deleteInventory(Long inventoryId){
+        Inventory inventory = inventoryRepository.findById(inventoryId).orElse(null);
+        if (inventory == null) {
+            return "Inventory not found";  // Return a message instead of HTTP status
         }
+        // Delete the inventory if it exists
+        inventoryRepository.delete(inventory);
+        return "Inventory successfully deleted"; 
     }
 }
 
