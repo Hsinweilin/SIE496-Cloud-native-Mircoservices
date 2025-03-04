@@ -71,6 +71,29 @@ services:
     networks:
       - backend
 
+  payment-service:
+    image: ostock/payment-service:0.0.1-SNAPSHOT
+    environment:
+      SPRING_APPLICATION_NAME: "payment-service"
+      SPRING_PROFILES_ACTIVE: "dev"  # Correctly sets the active profile to 'test'
+      SPRING_CLOUD_CONFIG_URI: "http://configserver:8089"  # Correct config server URI
+      SPRING_CLOUD_CONFIG_PORT: "8089"  # Optional if you need to override the default port (usually not needed if correct URI is set)
+      DATABASESERVER_PORT: "5432"  # You can keep other environment variables as needed
+      ENCRYPT_KEY: "IMSYMMETRIC"
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+      userservice:
+        condition: service_started
+      inventory-order-service:
+        condition: service_started
+    ports:
+      - "8082:8080"
+    networks:
+      - backend  
+
 networks:
   backend:
     driver: bridge

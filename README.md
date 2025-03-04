@@ -10,12 +10,15 @@ This repo is for SIE496 Cloud-native Mircoservices project
 2. install docker-compose (execute once)
 
     If you install docker, you can execute "docker-compose".
+    
     Detail [link](https://docs.docker.com/compose/install/)
 
 3. install Java Development Kit
+
     Follow the [link](https://www.oracle.com/java/technologies/downloads/) and install JDK
 
 4. install Maven 
+
     ``` shell
     brew install maven
     ```
