@@ -21,4 +21,11 @@ mvn clean package
 docker buildx build --build-arg JAR_FILE=target/inventory-order-service-0.0.1-SNAPSHOT.jar -t ostock/inventory-order-service:0.0.1-SNAPSHOT .
 cd ..
 
+# build payment-service service
+echo "Building payment-service..."
+cd payment-service
+mvn clean package
+docker build --build-arg JAR_FILE=target/payment-service-0.0.1-SNAPSHOT.jar -t ostock/payment-service:0.0.1-SNAPSHOT .
+cd ..
+
 echo "Build and image creation complete."
