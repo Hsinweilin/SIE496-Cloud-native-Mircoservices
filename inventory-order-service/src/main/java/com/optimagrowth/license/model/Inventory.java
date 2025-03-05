@@ -17,7 +17,7 @@ import javax.persistence.GenerationType;
 @Entity
 @Table(name="inventory")
 public class Inventory extends RepresentationModel<Inventory> {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  // Database will auto-increment the ID
 	@Column(name = "inventoryId", nullable = false)
