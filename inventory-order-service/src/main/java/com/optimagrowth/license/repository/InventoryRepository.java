@@ -9,6 +9,6 @@ import com.optimagrowth.license.model.Inventory;
 
 @Repository
 public interface InventoryRepository extends CrudRepository<Inventory, Long> {
-    public Inventory findByProductName(String productName);
-    public Inventory findByProductNameAndInventoryId(String productName, Long inventoryId);
+	public Inventory findByProductName(String productName);
+	public Inventory findByProductNameAndInventoryId(String productName, Long inventoryId);
 }

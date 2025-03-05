@@ -17,67 +17,67 @@ import javax.persistence.GenerationType;
 @Entity
 @Table(name="inventory")
 public class Inventory extends RepresentationModel<Inventory> {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Database will auto-increment the ID
-    @Column(name = "inventoryId", nullable = false)
-    private Long inventoryId;
 
-    @Column(name = "productName", nullable = false)
-    private String productName;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)  // Database will auto-increment the ID
+	@Column(name = "inventoryId", nullable = false)
+	private Long inventoryId;
 
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity;
+	@Column(name = "productName", nullable = false)
+	private String productName;
 
-    @Column(name = "price", nullable = false)
-    private Integer price;
+	@Column(name = "quantity", nullable = false)
+	private Integer quantity;
 
-    @Column(name = "description")
-    private String description;
+	@Column(name = "price", nullable = false)
+	private Integer price;
 
-    // Getter and Setter for inventoryId
-    public Long getInventoryId() {
-        return inventoryId;
-    }
+	@Column(name = "description")
+	private String description;
 
-    public void setInventoryId(Long inventoryId) {
-        this.inventoryId = inventoryId;
-    }
+	// Getter and Setter for inventoryId
+	public Long getInventoryId() {
+		return inventoryId;
+	}
 
-    // Getter and Setter for productName
-    public String getProductName() {
-        return productName;
-    }
+	public void setInventoryId(Long inventoryId) {
+		this.inventoryId = inventoryId;
+	}
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
+	// Getter and Setter for productName
+	public String getProductName() {
+		return productName;
+	}
 
-    // Getter and Setter for quantity
-    public Integer getQuantity() {
-        return quantity;
-    }
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
+	// Getter and Setter for quantity
+	public Integer getQuantity() {
+		return quantity;
+	}
 
-    // Getter and Setter for price
-    public Integer getPrice() {
-        return price;
-    }
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
 
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
+	// Getter and Setter for price
+	public Integer getPrice() {
+		return price;
+	}
 
-    // Getter and Setter for description
-    public String getDescription() {
-        return description;
-    }
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	// Getter and Setter for description
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 }
