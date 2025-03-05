@@ -43,7 +43,7 @@ public class InventoryController {
     public ResponseEntity<Inventory> updateInventory(@PathVariable Long inventoryId, @RequestBody Inventory inventory) {
         Inventory updatedInventory = inventoryService.updateInventory(inventoryId, inventory);
 
-        if (updatedInventory == null) {
+        if (updatedInventory == null) {        
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // Return 404 if inventory not found
         }
 
