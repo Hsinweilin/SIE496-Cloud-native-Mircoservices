@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.optimagrowth.license.controller;
 
@@ -32,37 +32,37 @@ import com.optimagrowth.license.model.utils.RestErrorList;
 public class ExceptionController extends ResponseEntityExceptionHandler {
 
 
-    /**
-     * handleException - Handles all the Exception recieving a request, responseWrapper.
-     *@param request
-     *@param responseWrapper
-     *@return ResponseEntity<ResponseWrapper>
-     * @user ihuaylupo
-     * @since 2018-09-12 
-     */
-	@ExceptionHandler(value = { Exception.class })
-    public @ResponseBody ResponseEntity<ResponseWrapper> handleException(HttpServletRequest request,
-            ResponseWrapper responseWrapper){
-    	
-        return ResponseEntity.ok(responseWrapper);
-    }
-    
 	/**
-	 * handleIOException - Handles all the Authentication Exceptions of the application. 
+	 * handleException - Handles all the Exception recieving a request, responseWrapper.
+	 *@param request
+	 *@param responseWrapper
+	 *@return ResponseEntity<ResponseWrapper>
+	 * @user ihuaylupo
+	 * @since 2018-09-12
+	 */
+	@ExceptionHandler(value = { Exception.class })
+	public @ResponseBody ResponseEntity<ResponseWrapper> handleException(HttpServletRequest request,
+			ResponseWrapper responseWrapper){
+
+		return ResponseEntity.ok(responseWrapper);
+	}
+
+	/**
+	 * handleIOException - Handles all the Authentication Exceptions of the application.
 	 *@param request
 	 *@param exception
 	 *@return ResponseEntity<ResponseWrapper>
 	 * @user ihuaylupo
-	 * @since 2018-09-12 
+	 * @since 2018-09-12
 	 */
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ResponseWrapper> handleIOException(HttpServletRequest request, RuntimeException e){
-    	
-    	RestErrorList errorList = new RestErrorList(HttpStatus.NOT_ACCEPTABLE, new ErrorMessage(e.getMessage(), e.getMessage()));
-        ResponseWrapper responseWrapper = new ResponseWrapper(null, singletonMap("status", HttpStatus.NOT_ACCEPTABLE), errorList);
-        
-      
-        return ResponseEntity.ok(responseWrapper);
+
+		RestErrorList errorList = new RestErrorList(HttpStatus.NOT_ACCEPTABLE, new ErrorMessage(e.getMessage(), e.getMessage()));
+		ResponseWrapper responseWrapper = new ResponseWrapper(null, singletonMap("status", HttpStatus.NOT_ACCEPTABLE), errorList);
+
+
+		return ResponseEntity.ok(responseWrapper);
 	}
-	
+
 }
