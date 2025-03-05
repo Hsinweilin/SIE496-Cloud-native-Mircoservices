@@ -11,16 +11,16 @@ import lombok.Setter;
 @Getter @Setter
 public class ServiceConfig{
 
-  private String property;
+	private String property;
 
-  // Getter for property
-  public String getProperty() {
-    return property;
-  }
+	// Getter for property
+	public String getProperty() {
+		return property;
+	}
 
-  // Setter for property
-  public void setProperty(String property) {
-    this.property = property;
-  }
-    
+	// Setter for property
+	public void setProperty(String property) {
+		this.property = property;
+	}
+		
 }
