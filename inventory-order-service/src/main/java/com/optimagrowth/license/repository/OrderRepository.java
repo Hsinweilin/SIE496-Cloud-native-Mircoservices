@@ -9,6 +9,6 @@ import com.optimagrowth.license.model.Order;
 
 @Repository
 public interface OrderRepository extends CrudRepository<Order, Long> {
-    public List<Order> findByUserId(Long userId);
-    public Order findByUserIdAndOrderId(Long userId, Long orderId);
+	public List<Order> findByUserId(Long userId);
+	public Order findByUserIdAndOrderId(Long userId, Long orderId);
 }
