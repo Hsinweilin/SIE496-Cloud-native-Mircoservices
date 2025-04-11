@@ -94,6 +94,37 @@ services:
     networks:
       - backend  
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    restart: always
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://database:5432/keycloak_db  # Connect to the ostock_dev database
+      KC_DB_USERNAME: postgres  # Match the DB user defined in PostgreSQL config
+      KC_DB_PASSWORD: post  # Match the DB password defined in PostgreSQL config
+
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+
+      KC_LOG_LEVEL: info
+      KC_METRICS_ENABLED: true
+      KC_HEALTH_ENABLED: true
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command:
+      - start-dev  # Ensures Keycloak starts in dev mode
+      - "-Dkeycloak.import=/opt/jboss/keycloak/realm-export.json"  # Import realm from the mounted JSON file
+      - "-Dkeycloak.profile.feature.scripts=enabled"  # Enable scripts feature
+      - "-Dkeycloak.profile.feature.upload_scripts=enabled"  # Enable script uploads
+    ports:
+      - "8080:8080"
+    networks:
+      backend:
+        aliases:
+          - "keycloak"
+
 networks:
   backend:
     driver: bridge

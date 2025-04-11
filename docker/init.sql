@@ -6,3 +6,6 @@ CREATE DATABASE inventory_order_service_db;
 
 -- Create database for payment-service
 CREATE DATABASE payment_service_db;
+
+-- Create database for keycloak
+CREATE DATABASE keycloak_db;
