@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import com.optimagrowth.license.config.ServiceConfig;
 import com.optimagrowth.license.model.Inventory;
 import com.optimagrowth.license.repository.InventoryRepository;
 import org.springframework.http.HttpStatus;

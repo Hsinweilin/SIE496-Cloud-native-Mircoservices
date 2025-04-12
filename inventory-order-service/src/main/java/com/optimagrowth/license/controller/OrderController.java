@@ -20,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import com.optimagrowth.license.model.Order;
 import com.optimagrowth.license.service.OrderService;
 
+import javax.annotation.security.RolesAllowed;
+
 @RestController
 @RequestMapping(value="v1/order")
 public class OrderController {
@@ -28,6 +30,7 @@ public class OrderController {
     private OrderService orderService;
 
     // Create a new order
+    @RolesAllowed({ "ADMIN", "USER" }) 
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
         Order createdOrder = orderService.createOrder(order);
@@ -43,6 +46,7 @@ public class OrderController {
     }
 
     // Update an existing order
+    @RolesAllowed("ADMIN") 
     @PutMapping("/{orderId}")
     public ResponseEntity<?> updateOrder(@PathVariable Long orderId, @RequestParam String orderStatus) {
         Order updatedOrder = orderService.updateOrderStatus(orderId, orderStatus);
@@ -58,6 +62,7 @@ public class OrderController {
     }
 
     // Get order by ID
+    @RolesAllowed({ "ADMIN", "USER" }) 
     @GetMapping("/{orderId}")
     public ResponseEntity<?> getOrder(@PathVariable Long orderId) {
         Order order = orderService.getOrder(orderId);
@@ -70,6 +75,7 @@ public class OrderController {
     }
 
     // Delete an order
+    @RolesAllowed("ADMIN") 
     @DeleteMapping("/{orderId}")
     public ResponseEntity<String> deleteOrder(@PathVariable Long orderId) {
         String message = orderService.deleteOrder(orderId);

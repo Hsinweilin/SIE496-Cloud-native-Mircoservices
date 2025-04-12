@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.optimagrowth</groupId>
 	<artifactId>gatewayserver</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>API Gateway server </name>
 	<description>API Gateway server </description>
 
