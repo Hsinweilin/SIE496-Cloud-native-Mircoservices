@@ -89,6 +89,32 @@ services:
       - "8082:8080"
     networks:
       - backend  
+
+  review-service:
+    image: ostock/review-service:0.0.1-SNAPSHOT
+    environment:
+      SPRING_APPLICATION_NAME: "review-service"
+      SPRING_PROFILES_ACTIVE: "dev"  # Correctly sets the active profile to 'test'
+      SPRING_CLOUD_CONFIG_URI: "http://configserver:8089"  # Correct config server URI
+      SPRING_CLOUD_CONFIG_PORT: "8089"  # Optional if you need to override the default port (usually not needed if correct URI is set)
+      DATABASESERVER_PORT: "5432"  # You can keep other environment variables as needed
+      ENCRYPT_KEY: "IMSYMMETRIC"
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+      inventory-order-service:
+        condition: service_started
+      payment-service:
+        condition: service_started
+    ports:
+      - "8083:8080"
+    networks:
+      - backend  
+
+
+
   gatewayserver:
     image: ostock/gatewayserver:0.0.1-SNAPSHOT
     ports:
