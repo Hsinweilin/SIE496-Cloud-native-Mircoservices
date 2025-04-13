@@ -20,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import com.optimagrowth.license.model.Order;
 import com.optimagrowth.license.service.OrderService;
 
+import javax.annotation.security.RolesAllowed;
+
 @RestController
 @RequestMapping(value="v1/order")
 public class OrderController {
@@ -27,10 +29,11 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 
-	// Create a new order
-	@PostMapping
-	public ResponseEntity<?> createOrder(@RequestBody Order order) {
-		Order createdOrder = orderService.createOrder(order);
+    // Create a new order
+    @RolesAllowed({ "ADMIN", "USER" }) 
+    @PostMapping
+    public ResponseEntity<?> createOrder(@RequestBody Order order) {
+        Order createdOrder = orderService.createOrder(order);
 
 		if (createdOrder == null) {
 			// If the order cannot be created (due to lack of inventory)
@@ -42,10 +45,11 @@ public class OrderController {
 							 .body(createdOrder);
 	}
 
-	// Update an existing order
-	@PutMapping("/{orderId}")
-	public ResponseEntity<?> updateOrder(@PathVariable Long orderId, @RequestParam String orderStatus) {
-		Order updatedOrder = orderService.updateOrderStatus(orderId, orderStatus);
+    // Update an existing order
+    @RolesAllowed("ADMIN") 
+    @PutMapping("/{orderId}")
+    public ResponseEntity<?> updateOrder(@PathVariable Long orderId, @RequestParam String orderStatus) {
+        Order updatedOrder = orderService.updateOrderStatus(orderId, orderStatus);
 
 		if (updatedOrder == null) {
 			// If the order cannot be updated (due to lack of inventory or not found)
@@ -57,10 +61,11 @@ public class OrderController {
 							 .body(updatedOrder);
 	}
 
-	// Get order by ID
-	@GetMapping("/{orderId}")
-	public ResponseEntity<?> getOrder(@PathVariable Long orderId) {
-		Order order = orderService.getOrder(orderId);
+    // Get order by ID
+    @RolesAllowed({ "ADMIN", "USER" }) 
+    @GetMapping("/{orderId}")
+    public ResponseEntity<?> getOrder(@PathVariable Long orderId) {
+        Order order = orderService.getOrder(orderId);
 
 		if (order == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");  // Order not found
@@ -69,10 +74,11 @@ public class OrderController {
 		return ResponseEntity.status(HttpStatus.OK).body(order);  // Return order details
 	}
 
-	// Delete an order
-	@DeleteMapping("/{orderId}")
-	public ResponseEntity<String> deleteOrder(@PathVariable Long orderId) {
-		String message = orderService.deleteOrder(orderId);
+    // Delete an order
+    @RolesAllowed("ADMIN") 
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<String> deleteOrder(@PathVariable Long orderId) {
+        String message = orderService.deleteOrder(orderId);
 
 		if (message.equals("Order not found")) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);

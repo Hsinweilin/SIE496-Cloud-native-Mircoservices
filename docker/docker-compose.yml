@@ -1,98 +1,161 @@
 version: "2.1"
 services:
-    database:
-        image: postgres:latest
-        ports:
-            - "5432:5432"
-        environment:
-            POSTGRES_USER: "postgres"
-            POSTGRES_PASSWORD: "pass"
-            #database will be created and specified for each microservice in init.sql
-        volumes:
-            - ./init.sql:/docker-entrypoint-initdb.d/1-init.sql
-            - ./data.sql:/docker-entrypoint-initdb.d/2-data.sql
-        networks:
-            backend:
-                aliases:
-                    - "database"
-        healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U postgres"]
-            interval: 10s
-            timeout: 5s
-            retries: 5
-    configserver:
-        image: ostock/configserver:0.0.1-SNAPSHOT
-        ports:
-            - "8089:8089"
-        environment:
-            SERVER_PORT: 8089
-            ENCRYPT_KEY: "fje83Ki8403Iod87dne7Yjsl3THueh48jfuO9j4U2hf64Lo"
-        networks:
-            backend:
-                aliases:
-                    - "configserver"
+  database:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "pass"
+      #database will be created and specified for each microservice in init.sql
+    volumes:
+        - ./init.sql:/docker-entrypoint-initdb.d/1-init.sql
+        - ./data.sql:/docker-entrypoint-initdb.d/2-data.sql
+    networks:
+      backend:
+        aliases:
+          - "database"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  configserver:
+    image: ostock/configserver:0.0.2-SNAPSHOT
+    ports:
+       - "8089:8089"
+    environment:
+      SERVER_PORT: 8089
+      ENCRYPT_KEY: "fje83Ki8403Iod87dne7Yjsl3THueh48jfuO9j4U2hf64Lo"
+    networks:
+      backend:
+        aliases:
+          - "configserver"
 
-    userservice:
-        image: ostock/user-service:0.0.1-SNAPSHOT
-        environment:
-            SPRING_APPLICATION_NAME: "user-service"
-            SPRING_PROFILES_ACTIVE: "dev" # Correctly sets the active profile to 'test'
-            SPRING_CLOUD_CONFIG_URI: "http://configserver:8089" # Correct config server URI
-            SPRING_CLOUD_CONFIG_PORT: "8089" # Optional if you need to override the default port (usually not needed if correct URI is set)
-            DATABASESERVER_PORT: "5432" # You can keep other environment variables as needed
-            ENCRYPT_KEY: "IMSYMMETRIC"
-        depends_on:
-            database:
-                condition: service_healthy
-            configserver:
-                condition: service_started
-        ports:
-            - "8080:8080"
-        networks:
-            - backend
-    inventory-order-service:
-        image: ostock/inventory-order-service:0.0.1-SNAPSHOT
-        environment:
-            SPRING_APPLICATION_NAME: "inventory-order-service"
-            SPRING_PROFILES_ACTIVE: "dev" # Correctly sets the active profile to 'test'
-            SPRING_CLOUD_CONFIG_URI: "http://configserver:8089" # Correct config server URI
-            SPRING_CLOUD_CONFIG_PORT: "8089" # Optional if you need to override the default port (usually not needed if correct URI is set)
-            DATABASESERVER_PORT: "5432" # You can keep other environment variables as needed
-            ENCRYPT_KEY: "IMSYMMETRIC"
-        depends_on:
-            database:
-                condition: service_healthy
-            configserver:
-                condition: service_started
-            userservice:
-                condition: service_started
-        ports:
-            - "8081:8080"
-        networks:
-            - backend
+  # userservice:
+  #   image: ostock/user-service:0.0.1-SNAPSHOT
+  #   environment:
+  #     SPRING_APPLICATION_NAME: "user-service"
+  #     SPRING_PROFILES_ACTIVE: "dev"  # Correctly sets the active profile to 'test'
+  #     SPRING_CLOUD_CONFIG_URI: "http://configserver:8089"  # Correct config server URI
+  #     SPRING_CLOUD_CONFIG_PORT: "8089"  # Optional if you need to override the default port (usually not needed if correct URI is set)
+  #     DATABASESERVER_PORT: "5432"  # You can keep other environment variables as needed
+  #     ENCRYPT_KEY: "IMSYMMETRIC"
+  #   depends_on:
+  #     database:
+  #       condition: service_healthy
+  #     configserver:
+  #       condition: service_started
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - backend
+  inventory-order-service:
+    image: ostock/inventory-order-service:0.0.1-SNAPSHOT
+    environment:
+      SPRING_APPLICATION_NAME: "inventory-order-service"
+      SPRING_PROFILES_ACTIVE: "dev"  # Correctly sets the active profile to 'test'
+      SPRING_CLOUD_CONFIG_URI: "http://configserver:8089"  # Correct config server URI
+      SPRING_CLOUD_CONFIG_PORT: "8089"  # Optional if you need to override the default port (usually not needed if correct URI is set)
+      DATABASESERVER_PORT: "5432"  # You can keep other environment variables as needed
+      ENCRYPT_KEY: "IMSYMMETRIC"
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+    ports:
+      - "8081:8080"
+    networks:
+      - backend
 
-    payment-service:
-        image: ostock/payment-service:0.0.1-SNAPSHOT
-        environment:
-            SPRING_APPLICATION_NAME: "payment-service"
-            SPRING_PROFILES_ACTIVE: "dev" # Correctly sets the active profile to 'test'
-            SPRING_CLOUD_CONFIG_URI: "http://configserver:8089" # Correct config server URI
-            SPRING_CLOUD_CONFIG_PORT: "8089" # Optional if you need to override the default port (usually not needed if correct URI is set)
-            DATABASESERVER_PORT: "5432" # You can keep other environment variables as needed
-            ENCRYPT_KEY: "IMSYMMETRIC"
-        depends_on:
-            database:
-                condition: service_healthy
-            configserver:
-                condition: service_started
-            userservice:
-                condition: service_started
-            inventory-order-service:
-                condition: service_started
-        ports:
-            - "8082:8080"
-        networks:
-            - backend
+  payment-service:
+    image: ostock/payment-service:0.0.1-SNAPSHOT
+    environment:
+      SPRING_APPLICATION_NAME: "payment-service"
+      SPRING_PROFILES_ACTIVE: "dev"  # Correctly sets the active profile to 'test'
+      SPRING_CLOUD_CONFIG_URI: "http://configserver:8089"  # Correct config server URI
+      SPRING_CLOUD_CONFIG_PORT: "8089"  # Optional if you need to override the default port (usually not needed if correct URI is set)
+      DATABASESERVER_PORT: "5432"  # You can keep other environment variables as needed
+      ENCRYPT_KEY: "IMSYMMETRIC"
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+      inventory-order-service:
+        condition: service_started
+    ports:
+      - "8082:8080"
+    networks:
+      - backend  
+  gatewayserver:
+    image: ostock/gatewayserver:0.0.1-SNAPSHOT
+    ports:
+      - "8072:8072"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "8072"
+      SPRING_CLOUD_CONFIG_URI: "http://configserver:8089"
+      EUREKASERVER_URI: "http://eurekaserver:8070/eureka/"
+      EUREKASERVER_PORT: "8070"
+      CONFIGSERVER_PORT: "8089"
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+      eurekaserver:
+        condition: service_started
+    networks:
+      backend:
+        aliases:
+          - "gateway"
+  eurekaserver:
+    image: ostock/eurekaserver:0.0.2-SNAPSHOT
+    ports:
+      - "8070:8070"
+    environment:
+      SPRING_CLOUD_CONFIG_URI: "http://configserver:8089"  # Correct config server URI
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started  
+    networks:
+      backend:
+        aliases:
+          - "eurekaserver"
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    restart: always
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://database:5432/keycloak_db  # Connect to the ostock_dev database
+      KC_DB_USERNAME: postgres  # Match the DB user defined in PostgreSQL config
+      KC_DB_PASSWORD: pass  # Match the DB password defined in PostgreSQL config
+
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+
+      KC_LOG_LEVEL: info
+      KC_METRICS_ENABLED: true
+      KC_HEALTH_ENABLED: true
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command:
+      - start-dev  # Ensures Keycloak starts in dev mode
+      - "-Dkeycloak.import=/opt/jboss/keycloak/realm-export.json"  # Import realm from the mounted JSON file
+      - "-Dkeycloak.profile.feature.scripts=enabled"  # Enable scripts feature
+      - "-Dkeycloak.profile.feature.upload_scripts=enabled"  # Enable script uploads
+    ports:
+      - "8080:8080"
+    networks:
+      backend:
+        aliases:
+          - "keycloak"
 
 networks:
     backend:
