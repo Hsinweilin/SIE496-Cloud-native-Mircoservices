@@ -12,52 +12,54 @@ import java.util.List;
 @Service
 public class PaymentService {
 
-    @Autowired
-    private PaymentRepository paymentRepository;
+	@Autowired
+	private PaymentRepository paymentRepository;
 
-    // Create a new payment
-    public Payment createPayment(Payment payment) {
-        // add additional business logic after message queue is implemented
-        // check with order and the amount paid
-        return paymentRepository.save(payment);  // Save the payment to the repository
-    }
+	// Create a new payment
+	public Payment createPayment(Payment payment) {
+		// add additional business logic after message queue is implemented
+		// check with order and the amount paid
+		return paymentRepository.save(payment);  // Save the payment to the repository
+	}
 
-    // Update an existing payment's status (e.g., mark as completed or failed)
-    public Payment updatePaymentStatus(Long paymentId, String paymentStatus) {
-        // Fetch the existing payment by ID
-        Payment existingPayment = paymentRepository.findById(paymentId).orElse(null);
+	// Get payment by ID
+	public Payment getPayment(Long paymentId) {
+		return paymentRepository.findById(paymentId).orElse(null);
+	}
 
-        // If the payment is not found, return null
-        if (existingPayment == null) {
-            return null;  // Return null if payment not found
-        }
+	// Get all payments by userId
+	public List<Payment> getPaymentsByUserId(Long userId) {
+		return paymentRepository.findByUserId(userId);
+	}
+	
+	// Update an existing payment's status (e.g., mark as completed or failed)
+	public Payment updatePaymentStatus(Long paymentId, String paymentStatus) {
+		// Fetch the existing payment by ID
+		Payment existingPayment = paymentRepository.findById(paymentId).orElse(null);
 
-        // Set the new payment status
-        existingPayment.setPaymentStatus(paymentStatus);
+		// If the payment is not found, return null
+		if (existingPayment == null) {
+			return null;  // Return null if payment not found
+		}
 
-        // Save the updated payment to the repository
-        return paymentRepository.save(existingPayment);  // Return the updated payment
-    }
+		// Set the new payment status
+		existingPayment.setPaymentStatus(paymentStatus);
 
-    // Get payment by ID
-    public Payment getPayment(Long paymentId) {
-        return paymentRepository.findById(paymentId).orElse(null);
-    }
+		// Save the updated payment to the repository
+		return paymentRepository.save(existingPayment);  // Return the updated payment
+	}
 
-    // Get all payments by userId
-    public List<Payment> getPaymentsByUserId(Long userId) {
-        return paymentRepository.findByUserId(userId);
-    }
+	
 
-    // Delete a payment
-    public String deletePayment(Long paymentId) {
-        Payment payment = paymentRepository.findById(paymentId).orElse(null);
-        if (payment == null) {
-            return "Payment not found";  // Return a message instead of HTTP status
-        }
-        // Delete the payment if it exists
-        paymentRepository.delete(payment);
-        return "Payment successfully deleted";        
-    }
+	// Delete a payment
+	public String deletePayment(Long paymentId) {
+		Payment payment = paymentRepository.findById(paymentId).orElse(null);
+		if (payment == null) {
+			return "Payment not found";  // Return a message instead of HTTP status
+		}
+		// Delete the payment if it exists
+		paymentRepository.delete(payment);
+		return "Payment successfully deleted";        
+	}
 }
 

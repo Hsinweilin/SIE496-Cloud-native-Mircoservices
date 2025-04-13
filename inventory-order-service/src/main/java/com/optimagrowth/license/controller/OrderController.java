@@ -26,8 +26,8 @@ import javax.annotation.security.RolesAllowed;
 @RequestMapping(value="v1/order")
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+	@Autowired
+	private OrderService orderService;
 
     // Create a new order
     @RolesAllowed({ "ADMIN", "USER" }) 
@@ -35,15 +35,15 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@RequestBody Order order) {
         Order createdOrder = orderService.createOrder(order);
 
-        if (createdOrder == null) {
-            // If the order cannot be created (due to lack of inventory)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                                 .body("Not enough inventory or invalid product.");
-        }
+		if (createdOrder == null) {
+			// If the order cannot be created (due to lack of inventory)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+								 .body("Not enough inventory or invalid product.");
+		}
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                             .body(createdOrder);
-    }
+		return ResponseEntity.status(HttpStatus.CREATED)
+							 .body(createdOrder);
+	}
 
     // Update an existing order
     @RolesAllowed("ADMIN") 
@@ -51,15 +51,15 @@ public class OrderController {
     public ResponseEntity<?> updateOrder(@PathVariable Long orderId, @RequestParam String orderStatus) {
         Order updatedOrder = orderService.updateOrderStatus(orderId, orderStatus);
 
-        if (updatedOrder == null) {
-            // If the order cannot be updated (due to lack of inventory or not found)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                                 .body("Order not found or not enough inventory.");
-        }
+		if (updatedOrder == null) {
+			// If the order cannot be updated (due to lack of inventory or not found)
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+								 .body("Order not found or not enough inventory.");
+		}
 
-        return ResponseEntity.status(HttpStatus.OK)
-                             .body(updatedOrder);
-    }
+		return ResponseEntity.status(HttpStatus.OK)
+							 .body(updatedOrder);
+	}
 
     // Get order by ID
     @RolesAllowed({ "ADMIN", "USER" }) 
@@ -67,12 +67,12 @@ public class OrderController {
     public ResponseEntity<?> getOrder(@PathVariable Long orderId) {
         Order order = orderService.getOrder(orderId);
 
-        if (order == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");  // Order not found
-        }
+		if (order == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found");  // Order not found
+		}
 
-        return ResponseEntity.status(HttpStatus.OK).body(order);  // Return order details
-    }
+		return ResponseEntity.status(HttpStatus.OK).body(order);  // Return order details
+	}
 
     // Delete an order
     @RolesAllowed("ADMIN") 
@@ -80,14 +80,14 @@ public class OrderController {
     public ResponseEntity<String> deleteOrder(@PathVariable Long orderId) {
         String message = orderService.deleteOrder(orderId);
 
-        if (message.equals("Order not found")) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }
-        else if (message.equals("Order successfully deleted")) {
-            return ResponseEntity.status(HttpStatus.OK).body(message);
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the order");
-        }
-    }
+		if (message.equals("Order not found")) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+		}
+		else if (message.equals("Order successfully deleted")) {
+			return ResponseEntity.status(HttpStatus.OK).body(message);
+		}
+		else{
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the order");
+		}
+	}
 }

@@ -1,4 +1,4 @@
-version: '2.1'
+version: "2.1"
 services:
   database:
     image: postgres:latest
@@ -158,5 +158,5 @@ services:
           - "keycloak"
 
 networks:
-  backend:
-    driver: bridge
+    backend:
+        driver: bridge
