@@ -19,6 +19,11 @@ import org.springframework.http.HttpStatus;
 import com.optimagrowth.license.model.Inventory;
 import com.optimagrowth.license.service.InventoryService;
 
+import javax.annotation.security.RolesAllowed;
+
+//import usercontex
+import com.optimagrowth.license.utils.UserContext;
+
 @RestController
 @RequestMapping(value="v1/inventory")
 public class InventoryController {
@@ -39,6 +44,7 @@ public class InventoryController {
 	}
 
 	// Update inventory by ID
+	@RolesAllowed("ADMIN") 
 	@PutMapping("/{inventoryId}")
 	public ResponseEntity<Inventory> updateInventory(@PathVariable Long inventoryId, @RequestBody Inventory inventory) {
 		Inventory updatedInventory = inventoryService.updateInventory(inventoryId, inventory);
@@ -51,6 +57,7 @@ public class InventoryController {
 	}
 
 	// Create a new inventory item
+	@RolesAllowed("ADMIN") 
 	@PostMapping
 	public ResponseEntity<Inventory> createInventory(@RequestBody Inventory inventory) {
 		Inventory createdInventory = inventoryService.createInventory(inventory);
@@ -60,6 +67,7 @@ public class InventoryController {
 	}
 
 	// Delete inventory by ID
+	@RolesAllowed("ADMIN") 
 	@DeleteMapping("/{inventoryId}")
 	public ResponseEntity<String> deleteInventory(@PathVariable("inventoryId") Long inventoryId) {
 		String status = inventoryService.deleteInventory(inventoryId);

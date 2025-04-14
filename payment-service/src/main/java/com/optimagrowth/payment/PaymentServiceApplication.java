@@ -53,21 +53,21 @@ public class PaymentServiceApplication {
 		return messageSource;
 	}
 
-	// @SuppressWarnings("unchecked")
-	// @LoadBalanced
-	// @Bean
-	// public RestTemplate getRestTemplate(){
-	// 	RestTemplate template = new RestTemplate();
-    //     List interceptors = template.getInterceptors();
-    //     if (interceptors==null){
-    //         template.setInterceptors(Collections.singletonList(new UserContextInterceptor()));
-    //     }
-    //     else{
-    //         interceptors.add(new UserContextInterceptor());
-    //         template.setInterceptors(interceptors);
-    //     }
+	@SuppressWarnings("unchecked")
+	@LoadBalanced
+	@Bean
+	public RestTemplate getRestTemplate(){
+		RestTemplate template = new RestTemplate();
+        List interceptors = template.getInterceptors();
+        if (interceptors==null){
+            template.setInterceptors(Collections.singletonList(new UserContextInterceptor()));
+        }
+        else{
+            interceptors.add(new UserContextInterceptor());
+            template.setInterceptors(interceptors);
+        }
 
-    //     return template;
-	// }
+        return template;
+	}
 
 }

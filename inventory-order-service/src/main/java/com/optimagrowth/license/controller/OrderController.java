@@ -46,7 +46,7 @@ public class OrderController {
 	}
 
     // Update an existing order
-    @RolesAllowed("ADMIN") 
+    @RolesAllowed({ "ADMIN", "USER" }) 
     @PutMapping("/{orderId}")
     public ResponseEntity<?> updateOrder(@PathVariable Long orderId, @RequestParam String orderStatus) {
         Order updatedOrder = orderService.updateOrderStatus(orderId, orderStatus);
