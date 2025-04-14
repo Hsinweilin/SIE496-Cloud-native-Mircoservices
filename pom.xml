@@ -24,7 +24,8 @@
 
   <modules>
     <module>configserver</module>
-    <module>licensing-service</module>
+    <!-- commenting out licensing service -->
+    <!-- <module>licensing-service</module> -->
   </modules>
   <build>
     <plugins>
