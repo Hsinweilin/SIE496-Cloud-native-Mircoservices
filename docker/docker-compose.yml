@@ -116,7 +116,8 @@ services:
 
 
   gatewayserver:
-    image: ostock/gatewayserver:0.0.1-SNAPSHOT
+  # 0.0.2 to match the setup.sh
+    image: ostock/gatewayserver:0.0.2-SNAPSHOT
     ports:
       - "8072:8072"
     environment:
