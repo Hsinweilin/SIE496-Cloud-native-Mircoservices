@@ -24,8 +24,8 @@ public class ReviewService {
     }
 
     // update an existing review
-    public Review updateReview(Long userId, Long productId, Review updatedReview) {
-        Review existingReview = reviewRepository.findByUserIdAndProductId(userId, productId).orElse(null);
+    public Review updateReview(Long userId, Long inventoryId, Review updatedReview) {
+        Review existingReview = reviewRepository.findByUserIdAndInventoryId(userId, inventoryId).orElse(null);
         if (existingReview == null) {
             return null; // review doesn't exist
         }
@@ -36,8 +36,8 @@ public class ReviewService {
     }
 
     // delete a review
-    public String deleteReview(Long userId, Long productId) {
-        Review review = reviewRepository.findByUserIdAndProductId(userId, productId).orElse(null);
+    public String deleteReview(Long userId, Long inventoryId) {
+        Review review = reviewRepository.findByUserIdAndInventoryId(userId, inventoryId).orElse(null);
         if (review == null) {
             return "Review not found";
         }
@@ -46,9 +46,9 @@ public class ReviewService {
     }
 
     // get all reviews for a product, include product details
-    public List<Review> getReviewsByProductId(Long productId) {
-        List<Review> reviews = reviewRepository.findByProductId(productId);
-        String productDetails = getProductDetails(productId); // call product service
+    public List<Review> getReviewsByInventoryId(Long inventoryId) {
+        List<Review> reviews = reviewRepository.findByInventoryId(inventoryId);
+        String productDetails = getProductDetails(inventoryId); // call product service
         reviews.forEach(review -> review.setBody(review.getBody() + " | Product: " + productDetails));
         return reviews;
     }
@@ -59,16 +59,16 @@ public class ReviewService {
     }
 
     // get a specific review by user and product
-    public Review getReviewByUserAndProduct(Long userId, Long productId) {
-        return reviewRepository.findByUserIdAndProductId(userId, productId).orElse(null);
+    public Review getReviewByUserAndProduct(Long userId, Long inventoryId) {
+        return reviewRepository.findByUserIdAndInventoryId(userId, inventoryId).orElse(null);
     }
 
     // helper method to call product service and get product details
-    private String getProductDetails(Long productId) {
+    private String getProductDetails(Long inventoryId) {
         // TODO: ****fix
         
-        // assuming the product service has an endpoint like /v1/product/{productId}
-        String url = "http://product-service/v1/product/" + productId;
+        // assuming the product service has an endpoint like /v1/product/{inventoryId}
+        String url = "http://product-service/v1/product/" + inventoryId;
         try {
             return restTemplate.getForObject(url, String.class);
         } catch (Exception e) {

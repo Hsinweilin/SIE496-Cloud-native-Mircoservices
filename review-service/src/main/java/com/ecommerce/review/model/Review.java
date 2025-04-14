@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "reviews", uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "productId"}))
+@Table(name = "reviews", uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "inventoryId"}))
 public class Review {
 
 	@Id
@@ -15,8 +15,8 @@ public class Review {
 	@Column(name = "userId", nullable = false)
 	private Long userId;
 
-	@Column(name = "productId", nullable = false)
-	private Long productId;
+	@Column(name = "inventoryId", nullable = false)
+	private Long inventoryId;
 
 	@Column(name = "rating", nullable = false)
 	private Integer rating; // rating between 1 and 5
@@ -61,12 +61,12 @@ public class Review {
 		this.userId = userId;
 	}
 
-	public Long getProductId() {
-		return productId;
+	public Long getInventoryId() {
+		return inventoryId;
 	}
 
-	public void setProductId(Long productId) {
-		this.productId = productId;
+	public void setInventoryId(Long inventoryId) {
+		this.inventoryId = inventoryId;
 	}
 
 	public Integer getRating() {
