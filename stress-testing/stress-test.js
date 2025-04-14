@@ -50,7 +50,7 @@ export let options = {
 // test for inventory service
 export function inventoryTest() {
 	// send a GET request
-	let res = http.get("http://localhost:8081/v1/inventory-service"); // make sure this endpoint is correct
+	let res = http.get("http://localhost:8081/v1/inventory-order-service");
 	check(res, { "status is 200": (r) => r.status === 200 });
 	// wait for 1 second before the next request
 	sleep(1);
@@ -62,7 +62,7 @@ export function paymentTest() {
 		"http://localhost:8082/v1/payment-service",
 		JSON.stringify({ amount: 100 }),
 		{
-			headers: { "Content-Type": "application/json" }, // setting the content type
+			headers: { "Content-Type": "application/json" },
 		}
 	);
 	// make sure response status is 200
@@ -73,7 +73,7 @@ export function paymentTest() {
 // test for review service
 export function reviewTest() {
 	// GET request to fetch reviews
-	let res = http.get("http://localhost:8083/v1/review-service"); // replace with actual endpoint if different
+	let res = http.get("http://localhost:8083/v1/review-service");
 	// check if the response is 200
 	check(res, { "status is 200": (r) => r.status === 200 });
 	// 1 second wait
@@ -83,7 +83,7 @@ export function reviewTest() {
 // test for gateway service
 export function gatewayTest() {
 	// hitting the gateway endpoint
-	let res = http.get("http://localhost:8072/v1/gateway-service"); // gateway endpoint, double-check this
+	let res = http.get("http://localhost:8072/v1/gateway-server");
 	// check for 200
 	check(res, { "status is 200": (r) => r.status === 200 });
 	// 1 second wait
