@@ -59,7 +59,7 @@ public class ReviewService {
     }
 
     // get a specific review by user and product
-    public Review getReviewByUserAndProduct(Long userId, Long inventoryId) {
+    public Review getReviewByUserIdAndInventoryId(Long userId, Long inventoryId) {
         return reviewRepository.findByUserIdAndInventoryId(userId, inventoryId).orElse(null);
     }
 
@@ -67,7 +67,7 @@ public class ReviewService {
     private String getProductDetails(Long inventoryId) {
         // TODO: ****fix
         
-        // assuming the product service has an endpoint like /v1/product/{inventoryId}
+        // TODO: is this the right endpoint?
         String url = "http://product-service/v1/product/" + inventoryId;
         try {
             return restTemplate.getForObject(url, String.class);

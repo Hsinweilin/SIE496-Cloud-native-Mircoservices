@@ -61,8 +61,8 @@ public class ReviewController {
 
     // get a specific review by user and product
     @GetMapping("/{inventoryId}")
-    public ResponseEntity<?> getReviewByUserAndInventory(@PathVariable Long inventoryId, @RequestParam Long userId) {
-        Review review = reviewService.getReviewByUserAndInventory(userId, inventoryId);
+    public ResponseEntity<?> getReviewByUserIdAndInventoryId(@PathVariable Long inventoryId, @RequestParam Long userId) {
+        Review review = reviewService.getReviewByUserIdAndInventoryId(userId, inventoryId);
         if (review == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review not found");
         }
