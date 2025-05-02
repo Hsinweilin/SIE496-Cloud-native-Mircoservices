@@ -5,6 +5,10 @@ import org.springframework.stereotype.Service;
 
 import com.optimagrowth.payment.model.Payment;
 import com.optimagrowth.payment.repository.PaymentRepository;
+import com.optimagrowth.payment.utils.UserContextHolder;
+import com.optimagrowth.payment.events.source.SimpleSourceBean;
+import java.time.LocalDateTime;
+
 
 import java.util.List;
 
@@ -15,12 +19,31 @@ public class PaymentService {
 	@Autowired
 	private PaymentRepository paymentRepository;
 
+	@Autowired
+	private SimpleSourceBean simpleSourceBean;
+
+
 	// Create a new payment
-	public Payment createPayment(Payment payment) {
-		// add additional business logic after message queue is implemented
-		// check with order and the amount paid
-		return paymentRepository.save(payment);  // Save the payment to the repository
-	}
+    public Payment createPayment(Payment payment) {
+        // Set payment timestamp if not already set
+        if (payment.getPaymentDate() == null) {
+            payment.setPaymentDate(LocalDateTime.now());
+        }
+
+        // Save payment to the repository
+        Payment savedPayment = paymentRepository.save(payment);
+		
+        // Send a Kafka message with the saved payment details
+        simpleSourceBean.publishPaymentChange(
+                savedPayment.getPaymentId(),
+                savedPayment.getUserId(),
+                savedPayment.getPaymentDate(),
+                savedPayment.getOrderId(),
+                savedPayment.getPaymentStatus()
+        );
+
+        return savedPayment;
+    }
 
 	// Get payment by ID
 	public Payment getPayment(Long paymentId) {
