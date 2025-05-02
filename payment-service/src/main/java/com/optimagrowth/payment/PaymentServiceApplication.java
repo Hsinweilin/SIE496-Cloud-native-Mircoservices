@@ -25,7 +25,8 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Source;
 import com.optimagrowth.payment.utils.UserContextInterceptor;
 
 @SpringBootApplication
@@ -33,6 +34,7 @@ import com.optimagrowth.payment.utils.UserContextInterceptor;
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableEurekaClient
+@EnableBinding(Source.class)
 public class PaymentServiceApplication {
 
 	public static void main(String[] args) {

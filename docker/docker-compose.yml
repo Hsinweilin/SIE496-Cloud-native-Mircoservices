@@ -32,24 +32,6 @@ services:
         aliases:
           - "configserver"
 
-  # userservice:
-  #   image: ostock/user-service:0.0.1-SNAPSHOT
-  #   environment:
-  #     SPRING_APPLICATION_NAME: "user-service"
-  #     SPRING_PROFILES_ACTIVE: "dev"  # Correctly sets the active profile to 'test'
-  #     SPRING_CLOUD_CONFIG_URI: "http://configserver:8089"  # Correct config server URI
-  #     SPRING_CLOUD_CONFIG_PORT: "8089"  # Optional if you need to override the default port (usually not needed if correct URI is set)
-  #     DATABASESERVER_PORT: "5432"  # You can keep other environment variables as needed
-  #     ENCRYPT_KEY: "IMSYMMETRIC"
-  #   depends_on:
-  #     database:
-  #       condition: service_healthy
-  #     configserver:
-  #       condition: service_started
-  #   ports:
-  #     - "8080:8080"
-  #   networks:
-  #     - backend
   inventory-order-service:
     image: ostock/inventory-order-service:0.0.1-SNAPSHOT
     environment:
@@ -111,10 +93,7 @@ services:
     ports:
       - "8083:8080"
     networks:
-      - backend  
-
-
-
+      - backend 
   gatewayserver:
   # 0.0.2 to match the setup.sh
     image: ostock/gatewayserver:0.0.2-SNAPSHOT
@@ -183,6 +162,39 @@ services:
       backend:
         aliases:
           - "keycloak"
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - 2181:2181
+    networks:
+      backend:
+        aliases:
+          - "zookeeper"
+  kafkaserver:
+    image: wurstmeister/kafka:latest
+    ports:
+      - 9092:9092
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ADVERTISED_PORT=9092
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CREATE_TOPICS=dresses:1:1,ratings:1:1
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    depends_on:
+      - zookeeper
+    networks:
+      backend:
+        aliases:
+          - "kafka"
+  redisserver:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    networks:
+      backend:
+        aliases:
+          - "redis"
 
 networks:
     backend:
