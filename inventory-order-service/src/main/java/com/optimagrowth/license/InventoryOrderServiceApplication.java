@@ -25,6 +25,13 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Sink;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+// import PaymentChangeEventConsumer.class
+import com.optimagrowth.license.events.handler.PaymentChangeEventConsumer;
+
 
 import com.optimagrowth.license.utils.UserContextInterceptor;
 
@@ -34,6 +41,8 @@ import com.optimagrowth.license.utils.UserContextInterceptor;
 @EnableFeignClients
 @EnableEurekaClient
 public class InventoryOrderServiceApplication {
+
+	private static final Logger logger = LoggerFactory.getLogger(PaymentChangeEventConsumer.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(InventoryOrderServiceApplication.class, args);
