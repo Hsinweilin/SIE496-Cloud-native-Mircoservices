@@ -1,4 +1,4 @@
-package com.optimagrowth.payment.utils;
+package com.ecommerce.review.utils;
 
 import java.io.IOException;
 
@@ -27,8 +27,8 @@ public class UserContextFilter implements Filter {
 
         UserContextHolder.getContext().setCorrelationId(  httpServletRequest.getHeader(UserContext.CORRELATION_ID) );
         UserContextHolder.getContext().setUserId(httpServletRequest.getHeader(UserContext.USER_ID));
-        String authorizationHeader = httpServletRequest.getHeader("Authorization");
-        UserContextHolder.getContext().setAuthToken(authorizationHeader);
+        UserContextHolder.getContext().setAuthToken(httpServletRequest.getHeader(UserContext.AUTH_TOKEN));
+        UserContextHolder.getContext().setOrganizationId(httpServletRequest.getHeader(UserContext.ORGANIZATION_ID));
 
         logger.debug("UserContextFilter Correlation id: {}", UserContextHolder.getContext().getCorrelationId());
 

@@ -35,7 +35,7 @@ public class Order extends RepresentationModel<Order> {
 	private Integer totalPrice; // Total price for the order
 
 	@Column(name = "orderStatus", nullable = false)
-	private String orderStatus; // E.g., 'pending', 'completed', 'shipped'
+	private String orderStatus; // E.g., 'pending', 'completed', 'paid', 'shipped'
 
 	// PrePersist method to auto-set the orderDate to current timestamp
 	@PrePersist
