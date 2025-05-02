@@ -74,8 +74,8 @@ public class PaymentController {
                 headers.set(UserContext.CORRELATION_ID, correlationId);
             }
 
-            System.out.println("Url: " + url);
-            System.out.println("Token: " + authToken);
+            // System.out.println("Url: " + url);
+            // System.out.println("Token: " + authToken);
 
             headers.set("Authorization", authToken);
         

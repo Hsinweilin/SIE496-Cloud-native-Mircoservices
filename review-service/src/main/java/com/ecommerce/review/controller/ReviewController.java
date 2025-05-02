@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
+import com.ecommerce.review.service.ReviewService;
+
 @RestController
 @RequestMapping(value = "v1/review")
 public class ReviewController {
@@ -59,13 +61,13 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.OK).body(reviewService.getReviewsByUserId(userId));
     }
 
-    // get a specific review by user and product
-    @GetMapping("/{inventoryId}")
-    public ResponseEntity<?> getReviewByUserAndInventory(@PathVariable Long inventoryId, @RequestParam Long userId) {
-        Review review = reviewService.getReviewByUserAndInventory(userId, inventoryId);
-        if (review == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review not found");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(review);
-    }
+    // // get a specific review by user and product
+    // @GetMapping("/{inventoryId}")
+    // public ResponseEntity<?> getReviewByUserAndInventory(@PathVariable Long inventoryId, @RequestParam Long userId) {
+    //     Review review = reviewService.getReviewByUserAndInventory(userId, inventoryId);
+    //     if (review == null) {
+    //         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review not found");
+    //     }
+    //     return ResponseEntity.status(HttpStatus.OK).body(review);
+    // }
 }
