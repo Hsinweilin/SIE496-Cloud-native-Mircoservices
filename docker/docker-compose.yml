@@ -184,6 +184,16 @@ services:
         aliases:
           - "keycloak"
 
+  zipkin: 
+    image: openzipkin/zipkin 
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      backend:
+        aliases:
+          - "zipkin"
+
 networks:
     backend:
         driver: bridge
