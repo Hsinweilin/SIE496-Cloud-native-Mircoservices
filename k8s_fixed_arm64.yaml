@@ -201,9 +201,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert -f docker-compose.yml -o k8s.yaml
-    kompose.version: 1.35.0 (HEAD)
   labels:
     io.kompose.service: database
   name: database
@@ -214,28 +211,28 @@ spec:
       io.kompose.service: database
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert -f docker-compose.yml -o k8s.yaml
-        kompose.version: 1.35.0 (HEAD)
       labels:
         io.kompose.service: database
     spec:
       containers:
-    volumeMounts:
-      - name: init-scripts
-        mountPath: /docker-entrypoint-initdb.d
-      - env:
-        - name: POSTGRES_PASSWORD
-          value: pass
-        - name: POSTGRES_USER
-          value: postgres
-        image: postgres:latest
-        name: database
-        ports:
-        - containerPort: 5432
-          protocol: TCP
+        - name: database
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          env:
+            - name: POSTGRES_PASSWORD
+              value: pass
+            - name: POSTGRES_USER
+              value: postgres
+          volumeMounts:
+            - name: init-scripts
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: init-scripts
+          configMap:
+            name: postgres-init-scripts
       restartPolicy: Always
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -452,6 +449,9 @@ spec:
       containers:
       - args:
         - start-dev
+        - --http-enabled=true
+        - --hostname-strict=false
+        - --hostname=af4a3f1e62aa44fd2bb4acd95eeda4a9-1961531088.us-east-1.elb.amazonaws.com
         env:
         - name: KC_DB
           value: postgres
@@ -464,7 +464,7 @@ spec:
         - name: KC_HEALTH_ENABLED
           value: 'true'
         - name: KC_HOSTNAME
-          value: localhost
+          value: af4a3f1e62aa44fd2bb4acd95eeda4a9-1961531088.us-east-1.elb.amazonaws.com
         - name: KC_HOSTNAME_PORT
           value: '8080'
         - name: KC_HOSTNAME_STRICT
