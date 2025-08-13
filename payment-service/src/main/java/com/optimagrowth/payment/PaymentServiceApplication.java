@@ -30,7 +30,6 @@ import org.springframework.cloud.stream.messaging.Source;
 import com.optimagrowth.payment.utils.UserContextInterceptor;
 
 @SpringBootApplication
-@RefreshScope
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableEurekaClient
