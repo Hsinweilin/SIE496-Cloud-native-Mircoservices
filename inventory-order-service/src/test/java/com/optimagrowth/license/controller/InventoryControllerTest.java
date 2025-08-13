@@ -5,11 +5,27 @@ import com.optimagrowth.license.service.InventoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
+import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
+import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
+import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
+import org.keycloak.representations.adapters.config.AdapterConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -17,13 +33,56 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import org.keycloak.representations.adapters.config.AdapterConfig;
-import org.mockito.Mock;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.mockito.Mockito;
 
 @WebMvcTest(InventoryController.class)
+@org.springframework.test.context.ActiveProfiles("test")
+@org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc(addFilters = false)
 class InventoryControllerTest {
+
+    @TestConfiguration
+    @EnableWebSecurity
+    @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
+    @org.springframework.core.annotation.Order(1)
+    public static class TestSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            super.configure(http);
+            http.authorizeRequests()
+                .anyRequest().permitAll();
+            http.csrf().disable();
+        }
+
+        @Autowired
+        public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+            KeycloakAuthenticationProvider provider = keycloakAuthenticationProvider();
+            provider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+            auth.authenticationProvider(provider);
+        }
+
+        @Bean
+        @Override
+        @Primary
+        protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+            return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
+        }
+
+        @Bean
+        @Primary
+        public KeycloakSpringBootConfigResolver keycloakConfigResolver() {
+            return new KeycloakSpringBootConfigResolver();
+        }
+
+        @Bean
+        @Primary
+        public AdapterConfig adapterConfig() {
+            AdapterConfig adapterConfig = new AdapterConfig();
+            adapterConfig.setRealm("test-realm");
+            adapterConfig.setResource("test-client");
+            adapterConfig.setAuthServerUrl("http://localhost:8080/auth");
+            return adapterConfig;
+        }
+    }
 
     @Autowired
     private MockMvc mockMvc;
@@ -31,15 +90,11 @@ class InventoryControllerTest {
     @MockBean
     private InventoryService inventoryService;
 
-    @MockBean
-    private AdapterConfig adapterConfig;
-
     private Inventory inventory;
     private String inventoryJson;
 
     @BeforeEach
     void setUp() {
-        Mockito.when(adapterConfig.getRealm()).thenReturn("test-realm");
         inventory = new Inventory();
         inventory.setInventoryId(1L);
         inventory.setProductName("Widget");
