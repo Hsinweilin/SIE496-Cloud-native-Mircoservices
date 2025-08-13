@@ -33,6 +33,17 @@ public class Review {
 	@Column(name = "updatedAt")
 	private LocalDateTime updatedAt;
 
+	// Full-argument constructor for testing
+	public Review(Long reviewId, Long userId, Long inventoryId, String title, Integer rating, String body) {
+		this.reviewId = reviewId;
+		this.userId = userId;
+		this.inventoryId = inventoryId;
+		this.title = title;
+		this.rating = rating;
+		this.body = body;
+		this.createdAt = LocalDateTime.now();
+	}
+
 	// set timestamps before saving
 	@PrePersist
 	public void prePersist() {

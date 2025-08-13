@@ -23,6 +23,11 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
+    // Alias for test compatibility
+    public Review addReview(Review review) {
+        return createReview(review);
+    }
+
     // update an existing review
     public Review updateReview(Long userId, Long inventoryId, Review updatedReview) {
         Review existingReview = reviewRepository.findByUserIdAndInventoryId(userId, inventoryId).orElse(null);
@@ -45,7 +50,11 @@ public class ReviewService {
         return "Review successfully deleted";
     }
 
-    // get all reviews for a product, include product details
+    // get all reviews for a product (alias for test compatibility)
+    public List<Review> getReviewsByProductId(long productId) {
+        return getReviewsByInventoryId(productId);
+    }
+
     public List<Review> getReviewsByInventoryId(Long inventoryId) {
         List<Review> reviews = reviewRepository.findByInventoryId(inventoryId);
         String productDetails = getProductDetails(inventoryId); // call product service
