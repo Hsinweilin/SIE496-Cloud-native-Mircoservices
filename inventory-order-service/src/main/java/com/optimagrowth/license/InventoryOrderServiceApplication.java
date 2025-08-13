@@ -36,7 +36,6 @@ import com.optimagrowth.license.events.handler.PaymentChangeEventConsumer;
 import com.optimagrowth.license.utils.UserContextInterceptor;
 
 @SpringBootApplication
-@RefreshScope
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableEurekaClient
